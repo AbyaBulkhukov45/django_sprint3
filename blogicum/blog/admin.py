@@ -1,9 +1,11 @@
 from django.contrib import admin
+from django.contrib.admin import register
 from .models import Post, Location, Category
 
 admin.site.empty_value_display = 'Не задано'
 
 
+@register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -24,14 +26,12 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
 
 
-admin.site.register(Post, PostAdmin)
-
-
 class PostInline(admin.TabularInline):
     model = Post
     extra = 1
 
 
+@register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     inlines = (
         PostInline,
@@ -42,9 +42,7 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(Category, CategoryAdmin)
-
-
+@register(Location)
 class LocationAdmin(admin.ModelAdmin):
     inlines = (
         PostInline,
@@ -53,6 +51,3 @@ class LocationAdmin(admin.ModelAdmin):
     list_display = (
         'name',
     )
-
-
-admin.site.register(Location, LocationAdmin)
